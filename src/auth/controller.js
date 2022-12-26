@@ -1,6 +1,5 @@
 const User = require('../models/user.model')
-
-const mailer = require('../mailer')
+const mailer = require('./services/mailer')
 const createUser = (req, res) => {
 	const { username, password, email } = req.body;
 	console.log(username, password, email)

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { createUser, verifyUser, userArea } = require('../auth/controller');
-const { checkIfverified } = require('../middleware/user.middleware')
+const { checkIfverified } = require('../auth/middleware/user.middleware')
 
 
 router.post('/create', createUser)
