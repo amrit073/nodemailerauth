@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const { createUser, verifyUser, userArea } = require('../auth/controller');
+const { checkIfverified } = require('../middleware/user.middleware')
 
 
 router.post('/create', createUser)
 
 router.get('/verify', verifyUser)
 
-router.get('/protected', userArea)
+router.get('/protected', checkIfverified, userArea)
 
 module.exports = { router }
 

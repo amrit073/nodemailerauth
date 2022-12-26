@@ -52,7 +52,8 @@ const changeVerified = (id, res) => {
 
 const userArea = (req, res) => {
 	const { id } = req.query;
-	res.send(`hello ${id}`)
+	const { username } = req.body;
+	res.send(`hello ${username} with id ${id}`)
 }
 
 module.exports = { createUser, verifyUser, userArea };
