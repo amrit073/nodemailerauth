@@ -1,10 +1,8 @@
-const User = require('../../models/user.model')
+import User from '../../models/user.model';
 
 
 const checkIfverified = (req, res, next) => {
-	console.log(req.query)
-	console.log(req.params)
-	const { id } = req.query;
+	const { id } = req.cookies;
 	if (!id) {
 		return res.redirect('/')
 	}
@@ -19,4 +17,4 @@ const checkIfverified = (req, res, next) => {
 }
 
 
-module.exports = { checkIfverified }
+export { checkIfverified }

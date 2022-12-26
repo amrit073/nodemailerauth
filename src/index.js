@@ -1,12 +1,12 @@
-const express = require('express')
+import express from 'express';
 const app = express();
-const routes = require('./routes/user.routes').router;
-const bodyParser = require('body-parser');
-
+import { router as routes } from './routes/user.routes';
+import { json as _json, urlencoded } from 'body-parser';
+import cookieParser from 'cookie-parser';
 app.use(express.json());
 app.use(cookieParser())
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(_json()); // for parsing application/json
+app.use(urlencoded({ extended: true }));
 app.use('/', express.static('src/public'))
 app.use('/api', routes)
 app.listen(3000, () => {
