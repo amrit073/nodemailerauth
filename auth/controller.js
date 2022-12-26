@@ -1,8 +1,9 @@
 const User = require('../models/user.model')
 
 const mailer = require('../mailer')
-const createUser = async (req, res) => {
+const createUser = (req, res) => {
 	const { username, password, email } = req.body;
+	console.log(username, password, email)
 	const code = Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
 	new User({ username, password, email, verified: false, code })
 		.save(null, { method: 'insert' })
@@ -17,17 +18,29 @@ const createUser = async (req, res) => {
 }
 
 const verifyUser = async (req, res) => {
-	const { code, id } = req.params;
+	const { code, id } = req.query;
+	console.log('code :', code, "id:", id)
 
 	// await User.forge({ id }).fetch().then(d => console.log(d))
-	// await new User({ id }).fetch().then(data => console.log(data)) // this also not working
-	await new User.where({ id }).fetch().then(data => { // this also not working
-		if (data.toJSON().code == code) {
-			//	
+	await new User({ id }).fetch().then(data => {
+		if (data.get('code') == code) {
+			return changeVerified(id, res)
 		}
+		res.redirect('/')
 	})
 }
 
+
+const changeVerified = (id, res) => {
+	new User({ id }).save({ verified: true }, { patch: true })
+		.then(d => {
+			console.log(d)
+			res.redirect(`/api/protected?id=${id}`)
+		}).catch(e => {
+			console.log(e)
+			res.send(e)
+		})
+}
 // new User({})
 // 	.where({ username: username })
 // 	.save({ verified: true }, { patch: true })
@@ -38,8 +51,8 @@ const verifyUser = async (req, res) => {
 // 	res.redirect('/')
 
 const userArea = (req, res) => {
-	const { username } = req.body;
-	res.send(`hello ${username}`)
+	const { id } = req.query;
+	res.send(`hello ${id}`)
 }
 
 module.exports = { createUser, verifyUser, userArea };

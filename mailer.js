@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const url = '';
 const mailer = async (code, email, id) => {
 
 	Transporter = nodemailer.createTransport({
@@ -16,16 +15,14 @@ const mailer = async (code, email, id) => {
 		from: "lenore.bashirian9@ethereal.email",
 		to: email, // list of receivers
 		subject: 'email verification', // Subject line
-		html: `<p><a href="http://localhost:3000/api/verify?code=${code}&username=${id}">click to verify </a></p>`// plain text body
+		html: `<p><a href="http://localhost:3000/api/verify?code=${code}&id=${id}">click to verify </a></p>`// plain text body
 	};
 	await Transporter.sendMail(mailOptions, async function(err, info) {
 		if (err) return console.log(err)
 		console.log('Message sent: %s', info.messageId);
 		// Preview only available when sending through an Ethereal account
-		url = nodemailer.getTestMessageUrl(info)
-		console.log('Preview URL: %s', url);
+		console.log(nodemailer.getTestMessageUrl(info))
 	})
-	return url;
 
 
 }
