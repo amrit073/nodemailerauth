@@ -1,6 +1,6 @@
 import { createTransport, getTestMessageUrl } from 'nodemailer';
 import { smtpConfig } from '../../config.env';
-const mailer = async (code, email, id) => {
+const mailer = async (code: number, email: string, id: number) => {
 	const Transporter = createTransport(smtpConfig);
 
 	const mailOptions = {

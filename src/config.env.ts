@@ -1,6 +1,6 @@
 require('dotenv').config();
-
-const smtpConfig = {
+import { smtpConf } from './auth/interfaces'
+const smtpConfig: smtpConf = {
 	host: process.env.SMTPHOST,
 	port: process.env.SMTPPORT,
 	secure: false,
@@ -11,7 +11,7 @@ const smtpConfig = {
 }
 
 
-module.exports = { smtpConfig }
+export { smtpConfig }
 
 
 
