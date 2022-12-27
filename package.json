@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --exec babel-node src/index.js",
-    "build": "babel ./src/ -d dest/"
+    "build": "babel ./src/ -d dest/",
+    "test": "mocha --exit --recursive --require @babel/register src/test",
+    "test:coverage": "nyc --require @babel/register   mocha --exit --recursive src/test",
+    "makemigration": "knex migrate:make --knexfile ./src/knexfile.js",
+    "migrate": "knex migrate:latest --knexfile ./src/knexfile.js"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +30,10 @@
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.20.2",
-    "@babel/runtime": "^7.20.6"
+    "@babel/runtime": "^7.20.6",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0"
   }
 }
