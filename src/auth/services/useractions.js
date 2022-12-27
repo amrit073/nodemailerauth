@@ -24,16 +24,16 @@ const fetch = async (obj) => {
 
 }
 
-const update = async (obj) => {
+const update = async (obj, upd) => {
 	try {
-		const data = await new User(obj).save({ verified: true }, { patch: true })
+		const data = await new User(obj).save(upd, { patch: true })
 		return data;
 	} catch (e) {
 		console.error(e)
 	}
 }
 
-export default { create, update, fetch }
+export { create, update, fetch }
 
 
 

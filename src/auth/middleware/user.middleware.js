@@ -2,7 +2,11 @@ import User from '../../models/user.model';
 
 
 const checkIfverified = (req, res, next) => {
-	const { id } = req.cookies;
+	var { id } = req.cookies
+	if (!id) {
+		id = req.query.id;
+	}
+	console.log('idis ', id)
 	if (!id) {
 		return res.redirect('/')
 	}
@@ -13,7 +17,6 @@ const checkIfverified = (req, res, next) => {
 		req.body.username = data.get('username')
 		next()
 	})
-
 }
 
 

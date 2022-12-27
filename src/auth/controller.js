@@ -1,6 +1,5 @@
-import f from './services/useractions';
-const { update, create, fetch } = f;
-
+import { update, create, fetch } from './services/useractions';
+/** @type {import("express").RequestHandler} */
 
 const createUser = async (req, res) => {
 	const { username, password, email } = req.body;
