@@ -1,15 +1,16 @@
 import chai from 'chai'
 import { app } from '../index'
 import { update, create, fetch } from '../auth/services/useractions';
-chai.use(require('chai-http'));
+import chaihttp = require('chai-http')
+import { warn } from 'console';
+chai.use(chaihttp);
 const expect = chai.expect;
-
 
 /** @type {import("express").RequestHandler} */
 
 describe('signing up', () => {
 	it('request to homepage should get successfull responce', (done) => {
-		chai.request(app).get('/').end((err, res) => {
+		chai.request(app).get('/').end((_err, res) => {
 			expect(res.status).to.be.eq(200)
 			done();
 		})
@@ -20,20 +21,22 @@ describe('signing up', () => {
 
 describe('testing user services ', () => {
 
-	it('creating  users with valid object should return string', async () => {
-		const res = await create({ username: 'test', password: 'test', email: 'a@a.com' });
-		chai.expect(res).to.be.a('string');
-	}).timeout(7000)
-
+	it('creating  users with valid object should return string', (done) => {
+		create({ username: 'test', password: 'test', email: 'a@a.com' })
+			.then(res => {
+				chai.expect(res).to.be.a('string')
+				done();
+			})
+	})
 
 	it('feching users with valid object should return  object', async () => {
-		const res = await fetch({ id: 1 })
+		const res = await fetch(1)
 		expect(res).to.be.a('object')
 	})
 
 
 	it('updating users with valid id and update should return object with updated value', async () => {
-		const res = await update({ id: 1 }, { username: 'thisistest' })
+		const res = await update(1, { username: 'thisistest' })
 		expect(res.get('username')).to.be.eq('thisistest')
 	})
 
@@ -42,15 +45,17 @@ describe('testing user services ', () => {
 
 
 describe('testing user routes', () => {
-	it('posting to /api/create should give valid response with text containing email link', async () => {
+	it('posting to /api/create should give valid response with text containing email link', (done) => {
 		const body = {
 			username: 'testuser073', password: 'testpassword', email: 'email@test.com'
 		}
-		const res = await chai.request(app).post('/api/create').send(body);
-		expect(res.status).to.be.eq(200)
-		expect(res.text).to.be.a('string')
-	}).timeout(7000)
-
+		chai.request(app).post('/api/create').send(body)
+			.then(res => {
+				expect(res.status).to.be.eq(200)
+				expect(res.text).to.be.a('string')
+				done();
+			})
+	})
 
 	it('requestin protected routes without cookie or param should redirect me to home ', async () => {
 		const res = await chai.request(app).get('/api/protected')
