@@ -48,7 +48,7 @@ const verifyUser = async (req: Request, res: Response) => {
 
 const userArea = (req: Request, res: Response) => {
 	const { id } = req.cookies;
-	const { username } = req.data;
+	const username = req.data?.username;
 	res.send(`hello ${username} with id ${id}`)
 }
 
