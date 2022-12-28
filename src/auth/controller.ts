@@ -1,20 +1,20 @@
 import { update, create, fetch } from './services/useractions';
 /** @type {import("express").RequestHandler} */
 import { Request, Response } from 'express'
-import { Userm } from './interfaces'
+import { Userm, CUser, VUser } from './interfaces'
 
 const createUser = async (req: Request, res: Response) => {
-	const { username, password, email } = req.body;
-	const url = await create({ username, password, email })
+	const obj: CUser = req.body;
+	const url = await create(obj)
 	res.send(`please check you email for verification link , link to email: <a href="${url}">link</a>`)
 }
 
 
 const verifyUser = async (req: Request, res: Response) => {
-	const { code, id }: Userm = req.query;
-	const data = await fetch({ id })
-	if (data.toJSON().code == code) {
-		const updatedData = await update({ id }, { verified: true })
+	const obj: VUser = { id: parseInt(req.params.id), code: parseInt(req.params.code) }
+	const data = await fetch(obj.id)
+	if (data.toJSON().code == obj.code) {
+		const updatedData = await update(obj.id, { verified: true })
 		res.cookie('id', updatedData.get('id'));
 		return res.redirect(`/api/protected`)
 	}
