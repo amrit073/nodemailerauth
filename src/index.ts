@@ -1,4 +1,5 @@
 import express from 'express';
+require('dotenv').config();
 const app = express();
 import { router as routes } from './routes/user.routes';
 import { json as _json, urlencoded } from 'body-parser';
@@ -9,7 +10,11 @@ app.use(_json()); // for parsing application/json
 app.use(urlencoded({ extended: true }));
 app.use('/', express.static('src/public'))
 app.use('/api', routes)
-app.listen(3000, () => {
+process.on('uncaughtException', function(err) {
+	console.log(err);
+});
+
+app.listen(3001, () => {
 	console.log('started listening at port 3000')
 })
 

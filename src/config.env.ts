@@ -1,14 +1,17 @@
 require('dotenv').config();
-import { smtpConf } from './auth/interfaces'
-const smtpConfig: smtpConf = {
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
+const smtpConfig: SMTPTransport.Options = {
+
 	host: process.env.SMTPHOST,
-	port: process.env.SMTPPORT,
+	port: Number(process.env.SMTPPORT),
 	secure: false,
 	auth: {
-		user: process.env.SMTPUSER, // generated ethereal user
-		pass: process.env.SMTPPASS  // generated ethereal password
+		user: process.env.SMTPUSER,
+		pass: process.env.SMTPPASS
 	}
+
 }
+console.log(smtpConfig)
 
 
 export { smtpConfig }

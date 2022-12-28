@@ -1,24 +1,34 @@
 import { update, create, fetch } from './services/useractions';
 /** @type {import("express").RequestHandler} */
 import { Request, Response } from 'express'
-import { Userm, CUser, VUser } from './interfaces'
+import { CUser, VUser } from './interfaces'
 
 const createUser = async (req: Request, res: Response) => {
 	const obj: CUser = req.body;
-	const url = await create(obj)
-	res.send(`please check you email for verification link , link to email: <a href="${url}">link</a>`)
+	try {
+		const url = await create(obj)
+		res.send(`please check you email for verification link , link to email: <a href="${url}">link</a>`)
+	} catch (e) {
+		res.status(500).send(e)
+	}
 }
 
 
 const verifyUser = async (req: Request, res: Response) => {
-	const obj: VUser = { id: parseInt(req.params.id), code: parseInt(req.params.code) }
-	const data = await fetch(obj.id)
-	if (data.toJSON().code == obj.code) {
-		const updatedData = await update(obj.id, { verified: true })
-		res.cookie('id', updatedData.get('id'));
-		return res.redirect(`/api/protected`)
+	const obj: VUser = { id: Number(req.query.id), code: Number(req.query.code) }
+	// const obj: VUser = { id: parseInt(req.query?.id), code: parseInt(req.query?.code) }
+	console.log(obj)
+	try {
+		const data = await fetch(obj.id)
+		if (data.toJSON().code == obj.code) {
+			const updatedData = await update(obj.id, { verified: true })
+			res.cookie('id', updatedData.get('id'));
+			return res.redirect(`/api/protected`)
+		}
+		return res.send('please sign up')
+	} catch (e) {
+		res.status(500).send(e)
 	}
-	return res.send('please sign up')
 }
 
 // new User({})

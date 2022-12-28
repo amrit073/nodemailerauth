@@ -1,7 +1,6 @@
-import User from '../../models/user.model';
-
-
-const checkIfverified = (req, res, next) => {
+import { fetch } from '../services/useractions'
+import { Request, Response, NextFunction } from 'express'
+const checkIfverified = async (req: Request, res: Response, next: NextFunction) => {
 	var { id } = req.cookies
 	if (!id) {
 		id = req.query.id;
@@ -10,13 +9,12 @@ const checkIfverified = (req, res, next) => {
 	if (!id) {
 		return res.redirect('/')
 	}
-	new User({ id }).fetch().then(data => {
-		if (data.get('verified') == false) {
-			return res.redirect('/')
-		}
-		req.body.username = data.get('username')
-		next()
-	})
+	const data = await fetch(id)
+	if (data.get('verified') == false) {
+		return res.redirect('/')
+	}
+	req.body.username = data.get('username')
+	next()
 }
 
 

@@ -1,6 +1,6 @@
 import { User } from '../../models/user.model';
 import mailer from './mailer';
-import { Userm, CUser, VUser } from '../interfaces'
+import { CUser, UUser } from '../interfaces'
 const create = async (obj: CUser) => {
 	const code = Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
 	try {
@@ -25,7 +25,7 @@ const fetch = async (id: number) => {
 
 }
 
-const update = async (id: number, upd: Userm) => {
+const update = async (id: number, upd: UUser) => {
 	try {
 		const data = await new User({ id }).save(upd, { patch: true })
 		return data;

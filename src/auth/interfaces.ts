@@ -1,10 +1,19 @@
-interface Userm {
+interface MUser {
 	id: number,
 	username: string,
 	email: string,
 	password: string,
 	code: number,
 	verified: boolean
+}
+
+interface UUser {
+	id?: number,
+	username?: string,
+	email?: string,
+	password?: string,
+	code?: number,
+	verified?: boolean
 }
 
 interface smtpConf {
@@ -18,7 +27,7 @@ interface smtpConf {
 	}
 }
 
-type CUser = Pick<Userm, 'username' | 'email' | 'password'>
-type VUser = Pick<Userm, 'code' | 'id'>
+type CUser = Pick<MUser, 'username' | 'email' | 'password'>
+type VUser = Pick<MUser, 'code' | 'id'>
 
-export { Userm, smtpConf, CUser, VUser }
+export { MUser, smtpConf, CUser, VUser, UUser }
