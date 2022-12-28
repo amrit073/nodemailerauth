@@ -1,5 +1,6 @@
 import { fetch } from '../services/useractions'
 import { Request, Response, NextFunction } from 'express'
+// import { MRequest } from '../interfaces'
 const checkIfverified = async (req: Request, res: Response, next: NextFunction) => {
 	var { id } = req.cookies
 	if (!id) {
@@ -13,7 +14,7 @@ const checkIfverified = async (req: Request, res: Response, next: NextFunction) 
 	if (data.get('verified') == false) {
 		return res.redirect('/')
 	}
-	req.body.username = data.get('username')
+	req.data = { username: data.get('username') }
 	next()
 }
 

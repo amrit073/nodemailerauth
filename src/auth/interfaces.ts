@@ -1,3 +1,5 @@
+import { Request } from 'express'
+
 interface MUser {
 	id: number,
 	username: string,
@@ -27,7 +29,24 @@ interface smtpConf {
 	}
 }
 
+interface MRequest extends Request {
+	data: {
+		username: string;
+	}
+}
+
+interface Data {
+	data: {
+		username: string;
+	}
+}
+
+
+
+
+
+
 type CUser = Pick<MUser, 'username' | 'email' | 'password'>
 type VUser = Pick<MUser, 'code' | 'id'>
 
-export { MUser, smtpConf, CUser, VUser, UUser }
+export { MUser, smtpConf, CUser, VUser, UUser, MRequest, Data }

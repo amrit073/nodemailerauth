@@ -1,7 +1,7 @@
 import { update, create, fetch } from './services/useractions';
 /** @type {import("express").RequestHandler} */
 import { Request, Response } from 'express'
-import { CUser, VUser } from './interfaces'
+import { CUser, VUser, MRequest, Data } from './interfaces'
 
 const createUser = async (req: Request, res: Response) => {
 	const obj: CUser = req.body;
@@ -40,10 +40,19 @@ const verifyUser = async (req: Request, res: Response) => {
 // } else {
 // 	res.redirect('/')
 
+// const userArea = (req: MRequest, res: Response) => {
+// 	const { id } = req.cookies;
+// 	const { username } = req.data;
+// 	res.send(`hello ${username} with id ${id}`)
+// }
+
 const userArea = (req: Request, res: Response) => {
 	const { id } = req.cookies;
-	const { username } = req.body;
+	const { username } = req.data;
 	res.send(`hello ${username} with id ${id}`)
 }
+
+
+
 
 export { createUser, verifyUser, userArea };
