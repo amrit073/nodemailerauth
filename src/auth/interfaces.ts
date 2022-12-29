@@ -1,6 +1,4 @@
-import { Request } from 'express'
-
-interface MUser {
+interface User {
 	id: number,
 	username: string,
 	email: string,
@@ -9,34 +7,12 @@ interface MUser {
 	verified: boolean
 }
 
-interface UUser {
-	id?: number,
-	username?: string,
-	email?: string,
-	password?: string,
-	code?: number,
-	verified?: boolean
+type Bridge<T> = {
+	[Pro in keyof T]+?: T[Pro];
 }
 
+type UUser = Bridge<User>;
+type CUser = Pick<User, 'username' | 'email' | 'password'>
+type VUser = Pick<User, 'code' | 'id'>
 
-interface MRequest extends Request {
-	data: {
-		username: string;
-	}
-}
-
-interface Data {
-	data: {
-		username: string;
-	}
-}
-
-
-
-
-
-
-type CUser = Pick<MUser, 'username' | 'email' | 'password'>
-type VUser = Pick<MUser, 'code' | 'id'>
-
-export { MUser, CUser, VUser, UUser, MRequest, Data }
+export { CUser, VUser, UUser }
