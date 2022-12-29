@@ -18,16 +18,6 @@ interface UUser {
 	verified?: boolean
 }
 
-interface smtpConf {
-	host: string | undefined,
-	port: string | undefined,
-	secure: boolean | undefined,
-
-	auth: {
-		user: string | undefined, // generated ethereal user
-		pass: string | undefined,// generated ethereal password
-	}
-}
 
 interface MRequest extends Request {
 	data: {
@@ -49,4 +39,4 @@ interface Data {
 type CUser = Pick<MUser, 'username' | 'email' | 'password'>
 type VUser = Pick<MUser, 'code' | 'id'>
 
-export { MUser, smtpConf, CUser, VUser, UUser, MRequest, Data }
+export { MUser, CUser, VUser, UUser, MRequest, Data }

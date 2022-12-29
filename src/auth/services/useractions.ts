@@ -1,6 +1,7 @@
 import { User } from '../../models/user.model';
 import mailer from './mailer';
 import { CUser, UUser } from '../interfaces'
+
 const create = async (obj: CUser) => {
 	const code = Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
 	try {

@@ -1,7 +1,7 @@
 import { update, create, fetch } from './services/useractions';
 /** @type {import("express").RequestHandler} */
 import { Request, Response } from 'express'
-import { CUser, VUser, MRequest, Data } from './interfaces'
+import { CUser, VUser } from './interfaces'
 
 const createUser = async (req: Request, res: Response) => {
 	const obj: CUser = req.body;
