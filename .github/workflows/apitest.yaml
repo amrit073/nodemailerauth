@@ -16,7 +16,7 @@ jobs:
         node-version: [ 15.x]
     steps:
       - name: Start PostgreSQL on Ubuntu
-         run: |
+         run:|
             sudo systemctl start postgresql.service
             psql -h postgres -U postgres_user -c 'CREATE DATABASE "mailauth";'
       - uses: actions/checkout@v3
