@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --exit --recursive --require  ts-node/register src/test/user.test.ts",
+    "test:prod": "mocha --exit --recursive  dest/test/user.test.js",
     "start": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "test:coverage": "nyc --require ts-node/register  mocha --exit --recursive src/test/user.test.ts",
