@@ -14,7 +14,7 @@ process.on('uncaughtException', function(err) {
 	console.log(err);
 });
 
-app.listen(3001, () => {
+app.listen(3000, () => {
 	console.log('started listening at port 3000')
 })
 export { app };

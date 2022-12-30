@@ -9,8 +9,8 @@
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "test:coverage": "nyc --require ts-node/register  mocha --exit --recursive src/test/user.test.ts",
-    "makemigration": "knex migrate:make --knexfile ./src/knexfile.js",
-    "migrate": "knex migrate:latest --knexfile ./src/knexfile.js"
+    "makemigration": "knex migrate:make --knexfile ./src/knexfile.ts",
+    "migrate": "knex migrate:latest --knexfile ./src/knexfile.ts"
   },
   "author": "",
   "license": "ISC",

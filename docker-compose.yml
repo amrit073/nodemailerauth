@@ -1,15 +1,17 @@
 version: "3.9"
 
 services:
- db:
+ postgres:
   image: postgres
+  ports: 
+    - "5432:5432"
   volumes:
     - persist:/var/lib/postgresql/data
   volumes: 
     - ./.env:/app/.env
   environment:
     - POSTGRES_DB=mailauth
-    - POSTGRES_USER=${DB_USER}
+    - POSTGRES_USER=postgres
     - POSTGRES_HOST_AUTH_METHOD=trust
  
  application:
@@ -17,14 +19,16 @@ services:
     context: .
     dockerfile: Dockerfile
     target: app
-  volumes: 
-    - ./.env:/app/.env
+  volumes:
+    - type: bind
+      source: .env  
+      target: /app/.env
   ports:
-    - "3001:3001"
+    - "3000:3000"
   links:
-    - "db:database"
+    - postgres 
   depends_on:
-    - db
+    - postgres
  
  application-test:
   build:
@@ -33,8 +37,10 @@ services:
     target: test 
   volumes: 
     - ./.env:/app/.env
+  links:
+    - postgres
   depends_on:
-    - db
+    - postgres 
 
 volumes:
   persist:
