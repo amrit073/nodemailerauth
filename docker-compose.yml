@@ -3,44 +3,88 @@ version: "3.9"
 services:
  postgres:
   image: postgres
-  ports: 
+  ports:
     - "5432:5432"
   volumes:
     - persist:/var/lib/postgresql/data
-  volumes: 
     - ./.env:/app/.env
   environment:
     - POSTGRES_DB=mailauth
     - POSTGRES_USER=postgres
-    - POSTGRES_HOST_AUTH_METHOD=trust
- 
+    - POSTGRES_PASSWORD=root
+
  application:
   build:
     context: .
     dockerfile: Dockerfile
     target: app
   volumes:
-    - type: bind
-      source: .env  
-      target: /app/.env
+    - ./.env:/app/.env
+  environment:
+    - DB_HOST=postgres
   ports:
     - "3000:3000"
   links:
-    - postgres 
+    - postgres
   depends_on:
     - postgres
- 
- application-test:
+  command:
+     [
+       "./wait-for-it/wait-for-it.sh",
+       "postgres:5432",
+       "--",
+       "npm",
+       "run",
+       "start",
+     ]
+
+ test:
   build:
     context: .
     dockerfile: Dockerfile
-    target: test 
-  volumes: 
+    target: app
+  volumes:
     - ./.env:/app/.env
+  environment:
+    - DB_HOST=postgres
+  ports:
+    - "3000:3000"
   links:
     - postgres
   depends_on:
-    - postgres 
+    - postgres
+  command:
+     [
+       "./wait-for-it/wait-for-it.sh",
+       "postgres:5432",
+       "--",
+       "npm",
+       "run",
+       "test:coverage",
+     ]
+
+ migrate:
+   build:
+     context: .
+   volumes:
+   - ./.env:/app/.env
+   command:
+     [
+       "./wait-for-it/wait-for-it.sh",
+       "postgres:5432",
+       "--",
+       "npm",
+       "run",
+       "migrate",
+     ]
+   links:
+     - postgres
+   depends_on:
+     - postgres
+   env_file: ./.env
+   environment:
+     - DB_HOST=postgres
+
 
 volumes:
   persist:
