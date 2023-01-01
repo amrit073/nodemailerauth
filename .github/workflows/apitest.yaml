@@ -18,7 +18,10 @@ jobs:
 
       - name: make test image  
         run: docker-compose build test 
-  
+
+      - name: migrate 
+        run: docker-compose run migrate 
+
       - name: test
         run: docker-compose run test
 
