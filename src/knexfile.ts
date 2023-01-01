@@ -7,7 +7,7 @@ module.exports = {
 			port: 5432,
 			database: 'mailauth',
 			user: 'postgres',
-			// password: process.env.DBPASS
+			password: 'root'
 		},
 		pool: {
 			min: 2,
