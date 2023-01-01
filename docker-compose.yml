@@ -7,19 +7,23 @@ services:
     - "5432:5432"
   volumes:
     - persist:/var/lib/postgresql/data
-    - ./.env:/app/.env
+    - env_file:./.env
   environment:
     - POSTGRES_DB=mailauth
     - POSTGRES_USER=postgres
     - POSTGRES_PASSWORD=root
+  healthcheck:
+    test: ['CMD-SHELL', 'pg_isready']
+    interval: 3s
+    timeout: 5s
+    retries: 5
+
 
  application:
   build:
     context: .
     dockerfile: Dockerfile
     target: app
-  volumes:
-    - ./.env:/app/.env
   environment:
     - DB_HOST=postgres
   ports:
@@ -27,12 +31,10 @@ services:
   links:
     - postgres
   depends_on:
-    - postgres
+    db:
+      condition: service_healthy
   command:
      [
-       "./wait-for-it/wait-for-it.sh",
-       "postgres:5432",
-       "--",
        "npm",
        "run",
        "start",
@@ -43,19 +45,15 @@ services:
     context: .
     dockerfile: Dockerfile
     target: app
-  volumes:
-    - ./.env:/app/.env
   environment:
     - DB_HOST=postgres
   links:
     - postgres
   depends_on:
-    - postgres
+    db:
+      condition: service_healthy
   command:
      [
-       "./wait-for-it/wait-for-it.sh",
-       "postgres:5432",
-       "--",
        "npm",
        "run",
        "test:coverage",
@@ -66,9 +64,6 @@ services:
      context: .
    command:
      [
-       "./wait-for-it/wait-for-it.sh",
-       "postgres:5432",
-       "--",
        "npm",
        "run",
        "migrate",
@@ -77,7 +72,6 @@ services:
      - postgres
    depends_on:
      - postgres
-   env_file: ./.env
    environment:
      - DB_HOST=postgres
 
