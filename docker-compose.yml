@@ -47,8 +47,6 @@ services:
     - ./.env:/app/.env
   environment:
     - DB_HOST=postgres
-  ports:
-    - "3000:3000"
   links:
     - postgres
   depends_on:
@@ -66,8 +64,6 @@ services:
  migrate:
    build:
      context: .
-   volumes:
-   - ./.env:/app/.env
    command:
      [
        "./wait-for-it/wait-for-it.sh",
